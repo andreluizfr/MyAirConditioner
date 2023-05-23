@@ -2,6 +2,7 @@
 
 ## Descrição
 Projeto feito para simular um sistema de monitoramento de ar condicionado com sensor de temperatura para evitar gastos em momentos em que o clima está frio.
+
 O sistema foi dividido em 3 partes:
 - Sensor de temperatura / Controlador do ar condicionado:
   - Sensor de temperatura:
@@ -28,3 +29,24 @@ O sistema foi dividido em 3 partes:
     - a última temperatura registrada no servidor;
     - se o controlador do ar condicionado está em funcionamento;
     - o último registro do estado do ar condicionado;
+  - pegar um período de espaço de dias no histórico e trazer as seguintes análises:
+    - os dias no espaço de tempo selecionado que possuem histórico salvo;
+    - quantidade de horas que o ar condicionado ficou ligado;
+    - quantidade de dinheiro total gasto;
+    - quantidade de dinheiro que seria gasto caso não houvesse o sistema para realizar o desligamento do ar condicionado;
+    - quantidade de dinheiro salvo no processo;
+
+## Como rodar 
+
+### Servidor:
+  - abra a /api em alguma IDE de sua preferência o com Spring configurado
+
+### Sensor de temperatura / Controlador do ar condicionado:
+  - cd temperatureSensor-airConditioner
+  - npm install
+  - npm start
+
+### Aplicativo web:
+  - cd temperatureSensor-airConditioner
+  - npm install
+  - npm start
