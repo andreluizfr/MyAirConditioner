@@ -42,14 +42,14 @@ O sistema foi dividido em 3 partes:
   - abra a /api em alguma IDE de sua preferência o com Spring configurado
 
 ### Sensor de temperatura / Controlador do ar condicionado:
-  - cd temperatureSensor-airConditioner
-  - npm install
-  - npm start
+  ``` cd temperatureSensor-airConditioner ```
+  ``` npm install ```
+  ``` npm start ```
 
 ### Aplicativo web:
-  - cd temperatureSensor-airConditioner
-  - npm install
-  - npm start
+  ``` cd temperatureSensor-airConditioner ```
+  ``` npm install ```
+  ``` npm start ```
 
 ## Configurações adicionais:
   
