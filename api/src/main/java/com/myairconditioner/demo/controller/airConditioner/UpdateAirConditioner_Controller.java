@@ -8,30 +8,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myairconditioner.demo.MyAirConditionerApplication;
-import com.myairconditioner.demo.controller.ResponseHandler;
 
 @RestController
 @RequestMapping("/api/airConditioner")
-public class UpdateAirConditionerController {
+public class UpdateAirConditioner_Controller {
 
     @PostMapping(value = "/updateAirConditioner", params = "isOn")
-    public ResponseEntity<Object> updateAirConditioner(@RequestParam("isOn") Boolean isOn) {
+    public ResponseEntity<HttpStatus> updateAirConditioner(@RequestParam("isOn") Boolean isOn) {
 
         try {
 
             MyAirConditionerApplication.airConditionerIsOn = isOn;
+            MyAirConditionerApplication.airConditionerControllerTimeout = 0;
 
-            return ResponseHandler.generateResponse(
-                    "Status do ar condicionado no servidor atualizado.",
-                    HttpStatus.ACCEPTED,
-                    "");
+            return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
 
         } catch (Exception e) {
 
-            return ResponseHandler.generateResponse(
-                    e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "");
+            return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
 

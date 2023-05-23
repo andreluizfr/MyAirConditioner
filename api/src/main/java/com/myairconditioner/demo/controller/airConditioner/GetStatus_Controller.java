@@ -2,33 +2,30 @@ package com.myairconditioner.demo.controller.airConditioner;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myairconditioner.demo.MyAirConditionerApplication;
-import com.myairconditioner.demo.controller.ResponseHandler;
 
+@CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8081", "http://localhost:3000" })
 @RestController
 @RequestMapping("/api/airConditioner")
-public class GetStatusController {
+public class GetStatus_Controller {
 
     @GetMapping("/status")
-    public ResponseEntity<Object> getStatus() {
+    public ResponseEntity<Boolean> getStatus() {
 
         try {
 
-            return ResponseHandler.generateResponse(
-                    "Busca por estado do ar condicionado foi um sucesso.",
-                    HttpStatus.ACCEPTED,
-                    MyAirConditionerApplication.airConditionerIsOn);
+            return new ResponseEntity<Boolean>(MyAirConditionerApplication.airConditionerIsOn,
+                    HttpStatus.ACCEPTED);
 
         } catch (Exception e) {
 
-            return ResponseHandler.generateResponse(
-                    e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "");
+            return new ResponseEntity<Boolean>(MyAirConditionerApplication.airConditionerIsOn,
+                    HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
 

@@ -7,11 +7,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myairconditioner.demo.MyAirConditionerApplication;
-import com.myairconditioner.demo.controller.ResponseHandler;
 
 @RestController
 @RequestMapping("/api/airConditioner")
-public class MyNextStepController {
+public class MyNextStep_Controller {
 
     @GetMapping("/myNextStep")
     public ResponseEntity<Object> nextStep() {
@@ -21,29 +20,22 @@ public class MyNextStepController {
             if (MyAirConditionerApplication.temperature > 26) {
 
                 MyNextStepReponseData dataObject = new MyNextStepReponseData(true,
-                        MyAirConditionerApplication.temperature);
+                        MyAirConditionerApplication.temperature, "O ar condicionado deve ficar ligado.");
 
-                return ResponseHandler.generateResponse(
-                        "O ar condicionado deve ficar ligado.",
-                        HttpStatus.ACCEPTED,
-                        dataObject);
+                return new ResponseEntity<Object>(dataObject, HttpStatus.ACCEPTED);
+
             } else {
 
                 MyNextStepReponseData dataObject = new MyNextStepReponseData(false,
-                        MyAirConditionerApplication.temperature);
+                        MyAirConditionerApplication.temperature, "O ar condicionado deve ficar desligado.");
 
-                return ResponseHandler.generateResponse(
-                        "O ar condicionado deve ficar desligado.",
-                        HttpStatus.ACCEPTED,
-                        dataObject);
+                return new ResponseEntity<Object>(dataObject, HttpStatus.ACCEPTED);
+
             }
 
         } catch (Exception e) {
 
-            return ResponseHandler.generateResponse(
-                    e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "");
+            return new ResponseEntity<Object>("", HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
 

@@ -8,9 +8,9 @@ import {
 
 import LoadingPage from "./pages/LoadingPage";
 const HomePage = React.lazy(() => import('./pages/HomePage'));
-const AnalyticsPage = React.lazy(() => import('./pages/Ana'));
-const ReportsPage = React.lazy(() => import('./pages/Reports'));
-const DashboardsPage = React.lazy(() => import('./pages/Dashboards'));
+const AnalyticsPage = React.lazy(() => import('./pages/AnalyticsPage'));
+const ReportsPage = React.lazy(() => import('./pages/ReportsPage'));
+const DashboardsPage = React.lazy(() => import('./pages/DashboardsPage'));
 
 export default function App(): JSX.Element {
 

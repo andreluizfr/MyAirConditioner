@@ -13,20 +13,19 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-import com.myairconditioner.demo.repository.OperatingHistoryRepository;
-import com.myairconditioner.demo.controller.ResponseHandler;
-import com.myairconditioner.demo.model.OperatingHistoryEntity;
+import com.myairconditioner.demo.repository.OperatingHistory_Repository;
+import com.myairconditioner.demo.model.OperatingHistory_Entity;
 
 @CrossOrigin(origins = { "http://localhost:8080", "http://localhost:8081", "http://localhost:3000" })
 @RestController
 @RequestMapping("/api/history")
-public class GetHistoryController {
+public class GetHistory_Controller {
 
     @Autowired
-    OperatingHistoryRepository operatingHistoryRepository;
+    OperatingHistory_Repository operatingHistoryRepository;
 
     @GetMapping(value = "/getHistory", params = { "day1", "month1", "year1", "day2", "month2", "year2" })
-    public ResponseEntity<Object> getHistory(
+    public ResponseEntity<List<OperatingHistory_Entity>> getHistory(
             @RequestParam(name = "day1") Integer day1,
             @RequestParam(name = "month1") Integer month1,
             @RequestParam(name = "year1") Integer year1,
@@ -42,19 +41,14 @@ public class GetHistoryController {
             LocalDate firstDate = LocalDate.of(year1, month1, day1);
             LocalDate secondDate = LocalDate.of(year2, month2, day2);
 
-            List<OperatingHistoryEntity> list = operatingHistoryRepository.findByDateBetween(firstDate, secondDate);
+            List<OperatingHistory_Entity> list = operatingHistoryRepository.findByDateBetween(firstDate, secondDate);
 
-            return ResponseHandler.generateResponse(
-                    "A busca foi um sucesso",
-                    HttpStatus.OK,
-                    list);
+            return new ResponseEntity<List<OperatingHistory_Entity>>(list, HttpStatus.OK);
 
         } catch (Exception e) {
 
-            return ResponseHandler.generateResponse(
-                    e.getMessage(),
-                    HttpStatus.BAD_REQUEST,
-                    new ArrayList<OperatingHistoryEntity>());
+            return new ResponseEntity<List<OperatingHistory_Entity>>(new ArrayList<OperatingHistory_Entity>(),
+                    HttpStatus.OK);
 
         }
 

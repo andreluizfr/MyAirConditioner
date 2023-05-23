@@ -7,19 +7,17 @@ class AirConditionerController{
         this.working;
         this.lastTemperatureRegistered;
         this.currentDate; 
-        this.stopDate;
     }
 
-    async init ([startYear, startMonth, startDay, startHour], [endYear, endMonth, endDay, endHour]) {
+    async init ([startYear, startMonth, startDay, startHour], delayTime) {
         //os meses aqui vão de 0 a 11
         this.currentDate = new Date(startYear, startMonth-1, startDay, startHour);
-        this.stopDate = new Date(endYear, endMonth-1, endDay, endHour);
         
         this.working = true;
         await this.updateAirConditionerControllerStateInServer(this.working);
 
         this.isOn = true;
-        this.interval = setInterval(this.run.bind(this), 1000);
+        this.interval = setInterval(this.run.bind(this), delayTime);
     }
 
     async run () {
@@ -33,7 +31,7 @@ class AirConditionerController{
 
             this.currentDate.setHours(this.currentDate.getHours() + 1);
             
-            const {on, temperature} = await this.myNextStep();
+            const {on, temperature, message} = await this.myNextStep();
 
             console.log("última temperatura registrada", temperature, "°C");
 
@@ -44,16 +42,6 @@ class AirConditionerController{
             await this.updateAirConditionerStateInServer();
         } catch (err) {
             console.log(err.message);
-        }
-
-        if(this.currentDate === this.stopDate){
-            this.working = false;
-            await updateAirConditionerControllerStateInServer(this.working);
-
-            clearInterval(this.interval);
-
-            console.log("Simulação do controlador pra ar condicionado chegou ao fim.",
-            "Acesse o site para ver informações sobre histórico do seu funcionamento");
         }
             
     }
@@ -78,7 +66,7 @@ class AirConditionerController{
     async myNextStep () {
         try {
             const nextStepResponse = await axios.get(`${process.env.BASE_API_URL}/airConditioner/myNextStep`);
-            return nextStepResponse.data.data;
+            return nextStepResponse.data;
         } catch (err) {
             throw new Error("Erro ao solicitar informação sobre qual operação deve ser feita pelo servidor.");
         }
@@ -94,6 +82,10 @@ class AirConditionerController{
 
     async updateAirConditionerControllerStateInServer (working) {
         await axios.post(`${process.env.BASE_API_URL}/airConditioner/updateAirConditionerController?isControllerWorking=${working}`);
+    }
+
+    async updateTemperatureSensorStateInServer (working) {
+        await axios.post(`${process.env.BASE_API_URL}/temperature/updateTemperatureSensor?isWorking=${working}`);
     }
 
 }

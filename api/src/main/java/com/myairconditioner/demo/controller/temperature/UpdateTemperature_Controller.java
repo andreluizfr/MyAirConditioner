@@ -8,30 +8,24 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.myairconditioner.demo.MyAirConditionerApplication;
-import com.myairconditioner.demo.controller.ResponseHandler;
 
 @RestController
 @RequestMapping("/api/temperature")
-public class UpdateTemperatureController {
+public class UpdateTemperature_Controller {
 
     @PostMapping(value = "/updateTemperature", params = "temperature")
-    public ResponseEntity<Object> update(@RequestParam("temperature") Double t) {
+    public ResponseEntity<HttpStatus> update(@RequestParam("temperature") Double temperature) {
 
         try {
 
-            MyAirConditionerApplication.temperature = t;
+            MyAirConditionerApplication.temperature = temperature;
+            MyAirConditionerApplication.temperatureSensorTimeout = 0;
 
-            return ResponseHandler.generateResponse(
-                    "Temperatura no servidor atualizada com sucesso",
-                    HttpStatus.ACCEPTED,
-                    t);
+            return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
 
         } catch (Exception e) {
 
-            return ResponseHandler.generateResponse(
-                    e.getMessage(),
-                    HttpStatus.INTERNAL_SERVER_ERROR,
-                    "");
+            return new ResponseEntity<HttpStatus>(HttpStatus.INTERNAL_SERVER_ERROR);
 
         }
 

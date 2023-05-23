@@ -1,6 +1,6 @@
 package com.myairconditioner.demo.controller.history;
 
-public class SaveHistoryProps {
+public class SaveHistoryPropsData {
     public Integer day;
     public Integer month;
     public Integer year;

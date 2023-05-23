@@ -10,4 +10,5 @@ import lombok.Setter;
 public class MyNextStepReponseData {
     private boolean isOn;
     private Double temperature;
+    private String message;
 }

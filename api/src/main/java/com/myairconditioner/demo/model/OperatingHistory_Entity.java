@@ -16,7 +16,7 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 @AllArgsConstructor
 @EqualsAndHashCode
-public class OperatingHistoryEntity {
+public class OperatingHistory_Entity {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -37,7 +37,7 @@ public class OperatingHistoryEntity {
     @Column(name = "history")
     private Boolean[] history;
 
-    public OperatingHistoryEntity(Integer day, Integer month, Integer year, boolean isOn, Integer hour) {
+    public OperatingHistory_Entity(Integer day, Integer month, Integer year, boolean isOn, Integer hour) {
         this.day = day;
         this.month = month;
         this.year = year;

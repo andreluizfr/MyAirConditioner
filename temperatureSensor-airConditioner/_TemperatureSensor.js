@@ -1,16 +1,22 @@
 import axios from 'axios';
-const BASE_API_URL = "http://localhost:8080/api";
 
 class TemperatureSensor{
 
     constructor() {
+        this.working;
         this.temperature;
     }
 
-    init (temperature) {
+    async init (temperature, delayTime) {
         this.temperature = temperature;
+        this.working = true;
+        await this.updateTemperatureSensorStateInServer(this.working);
         //using bind to not lose the context of this
-        setInterval(this.sendTemperatureSignalToServer.bind(this), 1000);
+        setInterval(this.sendTemperatureSignalToServer.bind(this), delayTime);
+    }
+
+    async updateTemperatureSensorStateInServer (working) {
+        await axios.post(`${process.env.BASE_API_URL}/temperature/updateTemperatureSensor?isWorking=${working}`);
     }
 
     async sendTemperatureSignalToServer() {

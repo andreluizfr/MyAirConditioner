@@ -8,7 +8,7 @@ import { DateRange } from '@mui/x-date-pickers-pro';
 import NavBar from '../components/NavBar';
 import { Link } from 'react-router-dom';
 
-export default function Analytics(): JSX.Element {
+export default function AnalyticsPage(): JSX.Element {
 
   const [dateRange, setDateRange] = useState<DateRange<Dayjs>>([null, null]);
 
