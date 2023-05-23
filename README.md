@@ -39,7 +39,7 @@ O sistema foi dividido em 3 partes:
 ## Como rodar 
 
 ### Servidor:
-  - abra a /api em alguma IDE de sua preferência o com Spring configurado
+  - abra a pasta /api em alguma IDE de sua preferência com o Spring configurado
 
 ### Sensor de temperatura / Controlador do ar condicionado:
   ``` cd temperatureSensor-airConditioner ```
