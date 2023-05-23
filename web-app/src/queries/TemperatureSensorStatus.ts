@@ -11,7 +11,7 @@ export default function TemperatureSensorStatus() {
 
         } catch (err) {
 
-            return {temperatureSensorStatus: null};
+            throw new Error("server is down");
 
         }
     }, {

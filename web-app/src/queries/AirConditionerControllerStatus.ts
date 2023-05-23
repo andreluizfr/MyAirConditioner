@@ -11,7 +11,7 @@ export default function AirConditionerControllerStatus() {
 
         } catch (err) {
 
-            return {airConditionerControllerStatus: null};
+            throw new Error("server is down");
 
         }
     }, {

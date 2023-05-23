@@ -16,7 +16,7 @@ public class MyAirConditionerApplication {
 	public static Boolean airConditionerControllerIsWorking = false;
 	public static Boolean airConditionerIsOn = false;
 
-	public static LocalDateTime currentDate;
+	public static LocalDateTime currentDate = LocalDateTime.of(1970, 1, 1, 0, 0, 0);
 
 	public static Integer temperatureSensorTimeout = 0;
 	public static Integer airConditionerControllerTimeout = 0;
@@ -27,7 +27,6 @@ public class MyAirConditionerApplication {
 		// conta até 5s para que os timeouts sejam resetados através das chamadas as
 		// respectivas rotas
 		// se os contadores chegarem em 5 (5s) muda os status do sensor e controlador
-		// se após os 5 for detectado
 		new Timer().scheduleAtFixedRate(new TimerTask() {
 			@Override
 			public void run() {

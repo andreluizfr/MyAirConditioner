@@ -29,8 +29,7 @@ export default function AnalyticsPage(): JSX.Element {
       axios.get(
         `/history/getHistory?day1=${dateRange[0].get("date")}&month1=${dateRange[0].get("month")+1}&year1=${dateRange[0].get("year")}&day2=${dateRange[1].get("date")}&month2=${dateRange[1].get("month")+1}&year2=${dateRange[1].get("year")}`
       ).then(response=>{
-        console.log(response.data.message);
-        setData(response.data.data as OperatingHistory[]);
+        setData(response.data as OperatingHistory[]);
       });
     }
   // eslint-disable-next-line react-hooks/exhaustive-deps

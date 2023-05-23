@@ -11,7 +11,7 @@ export default function Temperature() {
 
         } catch (err) {
 
-            return {temperature: null};
+            throw new Error("server is down");
 
         }
     }, {

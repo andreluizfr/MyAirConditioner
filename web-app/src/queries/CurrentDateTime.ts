@@ -11,10 +11,11 @@ export default function CurrentDateTime() {
 
         } catch (err) {
 
-            return {dateTime: null};
+            throw new Error("server is down");
 
         }
-    }, {
+    },
+    {
         enabled: true,
         staleTime: 200 //0,2s
     });
