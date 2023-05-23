@@ -43,12 +43,16 @@ O sistema foi dividido em 3 partes:
 
 ### Sensor de temperatura / Controlador do ar condicionado:
   ``` cd temperatureSensor-airConditioner ```
+  
   ``` npm install ```
+  
   ``` npm start ```
 
 ### Aplicativo web:
   ``` cd temperatureSensor-airConditioner ```
+  
   ``` npm install ```
+  
   ``` npm start ```
 
 ## Configurações adicionais:
