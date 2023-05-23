@@ -61,5 +61,5 @@ O sistema foi dividido em 3 partes:
 Você precisará configurar seu banco de dados em api/src/main/resources/application.properties
 
 ### Sensor de temperatura / Controlador do ar condicionado:
-No arquivo temperatureSensor-airConditioner/index.js você pode configurar o tempo de espera para que as horas passem na simulação, você também pode mudar a data e, que começa a simulação
+No arquivo temperatureSensor-airConditioner/index.js você pode configurar o tempo de espera para que as horas passem na simulação e você também pode mudar a data em que começa a simulação
   
