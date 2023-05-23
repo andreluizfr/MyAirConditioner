@@ -50,3 +50,12 @@ O sistema foi dividido em 3 partes:
   - cd temperatureSensor-airConditioner
   - npm install
   - npm start
+
+## Configurações adicionais:
+  
+### Servidor
+Você precisará configurar seu banco de dados em api/src/main/resources/application.properties
+
+### Sensor de temperatura / Controlador do ar condicionado:
+No arquivo temperatureSensor-airConditioner/index.js você pode configurar o tempo de espera para que as horas passem na simulação, você também pode mudar a data e, que começa a simulação
+  
