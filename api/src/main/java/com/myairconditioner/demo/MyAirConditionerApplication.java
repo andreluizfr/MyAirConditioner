@@ -7,7 +7,8 @@ import org.springframework.boot.autoconfigure.SpringBootApplication;
 public class MyAirConditionerApplication {
 
 	public static Double temperature = 0.0;
-	public static Boolean airConditionerIsOn = true;
+	public static Boolean airConditionerIsOn = false;
+	public static Boolean airConditionerControllerIsWorking = false;
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyAirConditionerApplication.class, args);

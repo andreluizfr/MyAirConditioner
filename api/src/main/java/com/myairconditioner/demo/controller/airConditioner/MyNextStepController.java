@@ -19,19 +19,23 @@ public class MyNextStepController {
         try {
 
             if (MyAirConditionerApplication.temperature > 26) {
-                MyAirConditionerApplication.airConditionerIsOn = true;
+
+                MyNextStepReponseData dataObject = new MyNextStepReponseData(true,
+                        MyAirConditionerApplication.temperature);
 
                 return ResponseHandler.generateResponse(
                         "O ar condicionado deve ficar ligado.",
                         HttpStatus.ACCEPTED,
-                        true);
+                        dataObject);
             } else {
-                MyAirConditionerApplication.airConditionerIsOn = false;
+
+                MyNextStepReponseData dataObject = new MyNextStepReponseData(false,
+                        MyAirConditionerApplication.temperature);
 
                 return ResponseHandler.generateResponse(
                         "O ar condicionado deve ficar desligado.",
                         HttpStatus.ACCEPTED,
-                        false);
+                        dataObject);
             }
 
         } catch (Exception e) {
