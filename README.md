@@ -1,7 +1,7 @@
 # MyAirConditioner
 
 ## Descrição
-Projeto feito para simular um sistema de monitoramento de ar condicionado com sensor de temperatura para evitar gastos em momentos em que o clima está frio.
+Projeto feito para simular um sistema de monitoramento de ar condicionado com sensor de temperatura para evitar gastos em momentos em que o clima está frio. Adianto que com certeza o jeito que eu fiz com esses long pollings não é o jeito correto de se fazer, mas eu ainda não estudei como implementar esse tipo de EDA. No Node eu sei que tem como resolver isso usando a arquitetura pub/sub do redis, porém com Java ainda não faço ideia.
 
 O sistema foi dividido em 3 partes:
 - Sensor de temperatura / Controlador do ar condicionado:
