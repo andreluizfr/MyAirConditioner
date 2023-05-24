@@ -49,7 +49,7 @@ O sistema foi dividido em 3 partes:
   ``` npm start ```
 
 ### Aplicativo web:
-  ``` cd temperatureSensor-airConditioner ```
+  ``` cd web-app ```
   
   ``` npm install ```
   
