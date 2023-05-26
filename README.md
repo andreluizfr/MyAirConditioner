@@ -1,7 +1,7 @@
 # MyAirConditioner
 
 ## Descrição
-Projeto feito para simular um sistema de monitoramento de ar condicionado com sensor de temperatura para evitar gastos em momentos em que o clima está frio.
+Projeto feito para simular um sistema de monitoramento de ar condicionado com sensor de temperatura para evitar gastos em momentos em que o clima está frio. Adianto que com certeza o jeito que eu fiz com esses long pollings não é o jeito correto de se fazer, mas eu ainda não estudei como implementar esse tipo de EDA. No Node eu sei que tem como resolver isso usando a arquitetura pub/sub do redis, porém com Java ainda não faço ideia.
 
 O sistema foi dividido em 3 partes:
 - Sensor de temperatura / Controlador do ar condicionado:
@@ -39,7 +39,7 @@ O sistema foi dividido em 3 partes:
 ## Como rodar 
 
 ### Servidor:
-  - abra a /api em alguma IDE de sua preferência o com Spring configurado
+  - abra a pasta /api em alguma IDE de sua preferência com o Spring configurado
 
 ### Sensor de temperatura / Controlador do ar condicionado:
   ``` cd temperatureSensor-airConditioner ```
@@ -49,7 +49,7 @@ O sistema foi dividido em 3 partes:
   ``` npm start ```
 
 ### Aplicativo web:
-  ``` cd temperatureSensor-airConditioner ```
+  ``` cd web-app ```
   
   ``` npm install ```
   
@@ -61,5 +61,5 @@ O sistema foi dividido em 3 partes:
 Você precisará configurar seu banco de dados em api/src/main/resources/application.properties
 
 ### Sensor de temperatura / Controlador do ar condicionado:
-No arquivo temperatureSensor-airConditioner/index.js você pode configurar o tempo de espera para que as horas passem na simulação, você também pode mudar a data e, que começa a simulação
+No arquivo temperatureSensor-airConditioner/index.js você pode configurar o tempo de espera para que as horas passem na simulação e você também pode mudar a data em que começa a simulação
   
