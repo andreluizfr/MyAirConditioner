@@ -18,8 +18,9 @@ public class UpdateAirConditioner_Controller {
 
         try {
 
-            MyAirConditionerApplication.airConditionerIsOn = isOn;
+            MyAirConditionerApplication.airConditionerControllerIsWorking = true;
             MyAirConditionerApplication.airConditionerControllerTimeout = 0;
+            MyAirConditionerApplication.airConditionerIsOn = isOn;
 
             return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
 

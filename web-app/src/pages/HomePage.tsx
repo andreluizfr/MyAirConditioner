@@ -27,24 +27,9 @@ export default function HomePage ():JSX.Element {
     const AirConditionerStatusQuery = AirConditionerStatus();
 
     useEffect(()=>{
-        setInterval(()=>{
-            CurrentDateTimeQuery.refetch();
-
-            TemperatureSensorStatusQuery.refetch();
-            TemperatureQuery.refetch();
-
-            AirConditionerControllerStatusQuery.refetch();
-            AirConditionerStatusQuery.refetch();
-        }, 200) //0,2s
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, []); 
-
-    useEffect(()=>{
 
         if(CurrentDateTimeQuery.data){
-            console.log(CurrentDateTimeQuery.data.dateTimeString);
             const hours = Number(CurrentDateTimeQuery.data.dateTimeString.split(" ")[1].split(":")[0]);
-            console.log(hours);
 
             let windowBackgroundColor;
 
@@ -59,11 +44,12 @@ export default function HomePage ():JSX.Element {
             else if(hours >= 18 && hours <=23)
                 windowBackgroundColor = "rgb(50,50,50)";
             
-            const el = document.getElementById("window") as HTMLElement;
-            el.style.cssText = "background-color: "+windowBackgroundColor+";";
+            const el = document.getElementById("window") as HTMLElement | undefined;
+            if(el)
+                el.style.cssText = "background-color: "+windowBackgroundColor+";";
         }
         
-    }, [CurrentDateTimeQuery.data]);
+    }, [CurrentDateTimeQuery.data,TemperatureSensorStatusQuery.data, AirConditionerControllerStatusQuery.data]);
 
     return (
         <div className="App">
@@ -85,8 +71,8 @@ export default function HomePage ():JSX.Element {
                         {CurrentDateTimeQuery.isLoading? 
                             <span>loading...</span>
                             :
-                            CurrentDateTimeQuery.error?
-                                <span>{JSON.stringify(CurrentDateTimeQuery.error)}</span>
+                            CurrentDateTimeQuery.isError?
+                                <span>{CurrentDateTimeQuery.error.message}</span>
                                 :
                                 CurrentDateTimeQuery.data?
                                     <span>{CurrentDateTimeQuery.data.dateTimeString}</span>
@@ -101,27 +87,11 @@ export default function HomePage ():JSX.Element {
                         {TemperatureSensorStatusQuery.isLoading? 
                             <span>loading...</span>
                             :
-                            TemperatureSensorStatusQuery.error?
-                                <span>{JSON.stringify(TemperatureSensorStatusQuery.error)}</span>
+                            TemperatureSensorStatusQuery.isError?
+                                <span>{TemperatureSensorStatusQuery.error?.message}</span>
                                 :
                                 TemperatureSensorStatusQuery.data?
                                     <span>{JSON.stringify(TemperatureSensorStatusQuery.data.temperatureSensorStatus)}</span>
-                                    :
-                                    null
-                                
-                        }
-                    </div>
-
-                    <div>
-                        Last Temperature registered:{" "}
-                        {TemperatureQuery.isLoading? 
-                            <span>loading...</span>
-                            :
-                            TemperatureQuery.error?
-                                <span>{JSON.stringify(TemperatureQuery.error)}</span>
-                                :
-                                TemperatureQuery.data?
-                                    <span>{JSON.stringify(TemperatureQuery.data.temperature)}°C</span>
                                     :
                                     null
                                 
@@ -133,8 +103,8 @@ export default function HomePage ():JSX.Element {
                         {AirConditionerControllerStatusQuery.isLoading? 
                             <span>loading...</span>
                             :
-                            AirConditionerControllerStatusQuery.error?
-                                <span>{JSON.stringify(AirConditionerControllerStatusQuery.error)}</span>
+                            AirConditionerControllerStatusQuery.isError?
+                                <span>{AirConditionerControllerStatusQuery.error?.message}</span>
                                 :
                                 AirConditionerControllerStatusQuery.data?
                                     <span>{JSON.stringify(AirConditionerControllerStatusQuery.data.airConditionerControllerStatus)}</span>
@@ -143,24 +113,9 @@ export default function HomePage ():JSX.Element {
                                 
                         }
                     </div>
-
-                    <div>
-                        Last Air Conditioner isOn:{" "}
-                        {AirConditionerStatusQuery.isLoading? 
-                            <span>loading...</span>
-                            :
-                            AirConditionerStatusQuery.error?
-                                <span>{JSON.stringify(AirConditionerStatusQuery.error)}</span>
-                                :
-                                AirConditionerStatusQuery.data?
-                                    <span>{JSON.stringify(AirConditionerStatusQuery.data.airConditionerStatus)}</span>
-                                    :
-                                    null
-                                
-                        }
-                    </div>
                     
-                    {CurrentDateTimeQuery.data?
+                    
+                    {TemperatureSensorStatusQuery.data?.temperatureSensorStatus && AirConditionerControllerStatusQuery.data?.airConditionerControllerStatus && CurrentDateTimeQuery.data &&
                         <div className="Ambient-simulator">
                             <img className="Air-conditioner" src={airConditioner} alt="air conditioner"/>
                             {AirConditionerStatusQuery.data?.airConditionerStatus?
@@ -169,16 +124,29 @@ export default function HomePage ():JSX.Element {
                                 null
                             }
                             {
-                                (TemperatureQuery.data?.temperature > 25)?
-                                    <img className="Temperature" src={temperatureHeat} alt="temperature" />
+                                TemperatureQuery.data?.temperature!==undefined &&
+                                    <span className="Temperature">
+                                        {TemperatureQuery.data?.temperature}°C
+                                    </span>
+                            }
+                            {
+                                (TemperatureQuery.data?.temperature!==undefined && TemperatureQuery.data?.temperature>25)?
+                                    <img className="TemperatureSensor" src={temperatureHeat} alt="temperature" />
                                     :
-                                    <img className="Temperature" src={temperatureCold} alt="temperature" />
+                                    <img className="TemperatureSensor" src={temperatureCold} alt="temperature" />
                             }
                             <WindowIcon className="Window" id="window"/>
+                            {Number(CurrentDateTimeQuery.data.dateTimeString.split(" ")[1].split(":")[0])<13?
+                                <span className="Time">
+                                    {Number(CurrentDateTimeQuery.data.dateTimeString.split(" ")[1].split(":")[0])+" am"}
+                                </span>
+                                :
+                                <span className="Time">
+                                    {String((Number(CurrentDateTimeQuery.data.dateTimeString.split(" ")[1].split(":")[0])-12))+" pm"}
+                                </span>
+                            }
                             <img className="Person" src={person} alt="person"/>
                         </div>
-                        :
-                        null
                     }
 
                 </section>

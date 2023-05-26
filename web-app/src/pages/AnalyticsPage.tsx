@@ -1,16 +1,20 @@
 import { useEffect, useState } from 'react';
-import axios from '../libs/axios';
+import { Link } from 'react-router-dom';
+import OperatingHistoryList from '../queries/OperatingHistory';
 import { OperatingHistory } from '../types/OperatingHistory';
 
+import NavBar from '../components/NavBar';
 import DateRangePickerWithShortcuts from '../components/DateRangePickerWithShortcuts';
 import { Dayjs } from 'dayjs';
 import { DateRange } from '@mui/x-date-pickers-pro';
-import NavBar from '../components/NavBar';
-import { Link } from 'react-router-dom';
+import DotLoader from "react-spinners/DotLoader";
+
 
 export default function AnalyticsPage(): JSX.Element {
 
   const [dateRange, setDateRange] = useState<DateRange<Dayjs>>([null, null]);
+
+  const OperatingHistoryQuery = OperatingHistoryList(dateRange);
 
   const [data, setData] = useState<OperatingHistory[]>();
 
@@ -24,16 +28,13 @@ export default function AnalyticsPage(): JSX.Element {
   } | null>(null);
 
   useEffect(()=>{
-
-    if(dateRange && dateRange[0] && dateRange[1]){
-      axios.get(
-        `/history/getHistory?day1=${dateRange[0].get("date")}&month1=${dateRange[0].get("month")+1}&year1=${dateRange[0].get("year")}&day2=${dateRange[1].get("date")}&month2=${dateRange[1].get("month")+1}&year2=${dateRange[1].get("year")}`
-      ).then(response=>{
-        setData(response.data as OperatingHistory[]);
-      });
-    }
+    OperatingHistoryQuery.refetch();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateRange]);
+  
+ useEffect(()=>{
+  if(OperatingHistoryQuery.data) setData(OperatingHistoryQuery.data.operatingHistory);
+ }, [OperatingHistoryQuery.data]);
 
   useEffect(()=>{
 
@@ -86,6 +87,17 @@ export default function AnalyticsPage(): JSX.Element {
         </section>
 
         <section className='Second-section'>
+          {OperatingHistoryQuery.isFetching? 
+            <DotLoader
+                className='Loader'
+                color="black"
+                size={50}
+                aria-label="Loading Spinner"
+                data-testid="loader"
+            />
+            :
+            OperatingHistoryQuery.isError && <p>{OperatingHistoryQuery.error?.message}</p>
+          }
           {analytics?
             <table className='Analytics-table'>
               <thead className='Table-header'>

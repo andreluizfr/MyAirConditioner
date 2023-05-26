@@ -36,10 +36,10 @@ public class MyAirConditionerApplication {
 				System.out.println(
 						"Waiting for Air Conditioner Controller to response..." + airConditionerControllerTimeout);
 
-				if (temperatureSensorTimeout >= 5) {
+				if (temperatureSensorTimeout == 5) {
 					temperatureSensorIsWorking = false;
 				}
-				if (airConditionerControllerTimeout >= 5) {
+				if (airConditionerControllerTimeout == 5) {
 					airConditionerControllerIsWorking = false;
 				}
 			}

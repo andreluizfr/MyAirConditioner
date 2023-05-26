@@ -18,8 +18,9 @@ public class UpdateTemperature_Controller {
 
         try {
 
-            MyAirConditionerApplication.temperature = temperature;
+            MyAirConditionerApplication.temperatureSensorIsWorking = true;
             MyAirConditionerApplication.temperatureSensorTimeout = 0;
+            MyAirConditionerApplication.temperature = temperature;
 
             return new ResponseEntity<HttpStatus>(HttpStatus.ACCEPTED);
 

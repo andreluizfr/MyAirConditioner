@@ -241,6 +241,13 @@ code {
 
 .Ambient-simulator .Temperature{
   position: absolute;
+  inset: 20px 55px auto auto;
+  font-size: 0.7rem;
+  font-weight: 500;
+}
+
+.Ambient-simulator .TemperatureSensor{
+  position: absolute;
   inset: 10px 20px auto auto;
   width: 30px;
   height: auto;
@@ -253,6 +260,13 @@ code {
   height: 70px;
 
   transition: background-color 200ms;
+}
+
+.Ambient-simulator .Time{
+  position: absolute;
+  inset: 160px auto auto 60px;
+  font-size: 0.7rem;
+  font-weight: 500;
 }
 
 .Ambient-simulator .Person{

@@ -4,7 +4,6 @@ class AirConditionerController{
 
     constructor() {
         this.isOn;
-        this.working;
         this.lastTemperatureRegistered;
         this.currentDate; 
     }
@@ -12,9 +11,7 @@ class AirConditionerController{
     async init ([startYear, startMonth, startDay, startHour], delayTime) {
         //os meses aqui vão de 0 a 11
         this.currentDate = new Date(startYear, startMonth-1, startDay, startHour);
-        
-        this.working = true;
-        await this.updateAirConditionerControllerStateInServer(this.working);
+
 
         this.isOn = true;
         this.interval = setInterval(this.run.bind(this), delayTime);
@@ -78,10 +75,6 @@ class AirConditionerController{
         } catch (err) {
             throw new Error("Erro ao atualizar status do ar condicionado no servidor.");
         }
-    }
-
-    async updateAirConditionerControllerStateInServer (working) {
-        await axios.post(`${process.env.BASE_API_URL}/airConditioner/updateAirConditionerController?isControllerWorking=${working}`);
     }
 
     async updateTemperatureSensorStateInServer (working) {
