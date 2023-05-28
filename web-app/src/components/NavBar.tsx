@@ -1,7 +1,8 @@
-import { useEffect } from "react";
+import { useEffect, memo } from "react";
 import { Link } from "react-router-dom";
 
-export default function NavBar(){
+const memoizedNavBar = memo(
+  function NavBar(){
 
     useEffect(()=>{
         const NavItems = document.getElementsByClassName("Nav-item");
@@ -35,4 +36,7 @@ export default function NavBar(){
           </nav>
         </div>
     )
-}
+  }
+);
+
+export default memoizedNavBar;

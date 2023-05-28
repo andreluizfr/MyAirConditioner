@@ -4,6 +4,7 @@ import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { StaticDateRangePicker } from '@mui/x-date-pickers-pro/StaticDateRangePicker';
 import { PickersShortcutsItem } from '@mui/x-date-pickers/PickersShortcuts';
 import { DateRange } from '@mui/x-date-pickers-pro';
+import { memo, useCallback } from 'react';
 
 const shortcutsItems: PickersShortcutsItem<DateRange<Dayjs>>[] = [
     {
@@ -46,11 +47,11 @@ const shortcutsItems: PickersShortcutsItem<DateRange<Dayjs>>[] = [
     { label: 'Reset', getValue: () => [null, null] },
 ];
 
-export default function DateRangePickerWithShortcuts({ setValue }: { setValue: any}) {
+function DateRangePickerWithShortcuts({ setValue }: { setValue: any}) {
 
-    function changed(date: DateRange<Dayjs>){
+    const changed = useCallback((date: DateRange<Dayjs>)=>{
         setValue(date);
-    }
+    }, [setValue]);
 
     return (
         <LocalizationProvider dateAdapter={AdapterDayjs}>
@@ -70,3 +71,7 @@ export default function DateRangePickerWithShortcuts({ setValue }: { setValue: a
         </LocalizationProvider>
     );
 }
+
+const memoizedDateRangePickerWithShortcuts = memo(DateRangePickerWithShortcuts);
+
+export default memoizedDateRangePickerWithShortcuts;

@@ -1,5 +1,5 @@
 import './styles.css';
-import React from 'react';
+import React, { Profiler } from 'react';
 
 import {
   createBrowserRouter,
@@ -12,6 +12,10 @@ const AnalyticsPage = React.lazy(() => import('./pages/AnalyticsPage'));
 const ReportsPage = React.lazy(() => import('./pages/ReportsPage'));
 const DashboardsPage = React.lazy(() => import('./pages/DashboardsPage'));
 
+function onRender(id: string, phase: string, actualDuration: number, baseDuration: number, startTime: number, commitTime: Number) {
+	console.log(`id: ${id}, phase: ${phase}, actualDuration: ${actualDuration.toFixed(2)}ms, baseDuration: ${baseDuration.toFixed(2)}ms, increasedPerformance: ${((baseDuration/actualDuration)*100).toFixed(2)}%`);
+}
+
 export default function App(): JSX.Element {
 
   return (
@@ -20,11 +24,11 @@ export default function App(): JSX.Element {
 			createBrowserRouter([
 				{
 					path: "/",
-					element: <HomePage/>,
+					element: <Profiler id="HomePage" onRender={onRender}><HomePage/></Profiler>,
 				},
 				{
 					path: "/analytics",
-					element: <AnalyticsPage/>,
+					element: <Profiler id="AnalyticsPage" onRender={onRender}><AnalyticsPage/></Profiler>,
 				},
 				{
 					path: "/reports",
