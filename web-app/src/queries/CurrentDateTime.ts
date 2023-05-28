@@ -1,5 +1,7 @@
 import { useQuery } from "react-query";
 import axios from '../libs/axios';
+import { AxiosError, isAxiosError } from "axios";
+import toast from "react-hot-toast";
 
 export default function CurrentDateTime() {
     const CurrentDateTimeQuery = useQuery <{ dateTimeString: string }, Error> ("CurrentDateTime", async () => {
@@ -11,7 +13,25 @@ export default function CurrentDateTime() {
 
         } catch (err: unknown) {
 
-            throw new Error("server is down");
+            const error = err as (Error | AxiosError);
+
+            if(isAxiosError(error)){
+                if (error.response) {
+                    // The request was made and the server responded with a status code that falls out of the range of 2xx 
+                    return error.response.data;
+                }
+                else if (error.request) {
+                    // The request was made but no response was received
+                    toast("ops", {
+                        duration: 4000,
+                        position: 'top-center',
+                    });
+                    throw new Error("Server couldn't response this request.");
+                } 
+            }
+            else{
+                throw new Error(error.message);
+            }
 
         }
     },
@@ -20,7 +40,7 @@ export default function CurrentDateTime() {
         refetchOnWindowFocus: false,
         staleTime: 0, //if its 0 it will always fetch the data again but it continues using cache as fallback while loading the query
         //cacheTime: 0, //with cacheTime as 0, the cache it will always be invalid and it will no be used as fallback
-        refetchInterval: data=>data?200:false,
+        refetchInterval: data=>data?200:false, //only start refetching with interval, once the request was successful
     });
 
     return CurrentDateTimeQuery;

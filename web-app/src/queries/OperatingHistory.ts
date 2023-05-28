@@ -1,8 +1,10 @@
 import { useQuery } from "react-query";
 import axios from '../libs/axios';
+import { AxiosError, isAxiosError } from "axios";
 import { OperatingHistory } from '../types/OperatingHistory';
 import { DateRange } from "@mui/x-date-pickers-pro";
 import { Dayjs } from "dayjs";
+
 
 export default function OperatingHistoryList(dateRange: DateRange<Dayjs>) {
     const OperatingHistoryQuery = useQuery <{operatingHistory: OperatingHistory[]} | undefined, Error> ("OperatingHistory", async () => {
@@ -15,7 +17,21 @@ export default function OperatingHistoryList(dateRange: DateRange<Dayjs>) {
 
         } catch (err: unknown) {
 
-            throw new Error("server is down");
+            const error = err as (Error | AxiosError);
+
+            if(isAxiosError(error)){
+                if (error.response) {
+                    // The request was made and the server responded with a status code that falls out of the range of 2xx 
+                    return error.response.data;
+                }
+                else if (error.request) {
+                    // The request was made but no response was received
+                    throw new Error("Server couldn't response this request.");
+                } 
+            }
+            else{
+                throw new Error(error.message);
+            }
 
         }
     }, {
