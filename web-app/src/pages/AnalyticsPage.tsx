@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useReducer, useState } from 'react';
 import { Link } from 'react-router-dom';
 import OperatingHistoryList from '../queries/OperatingHistory';
 import { OperatingHistory } from '../types/OperatingHistory';
@@ -13,19 +13,10 @@ import DotLoader from "react-spinners/DotLoader";
 export default function AnalyticsPage(): JSX.Element {
 
   const [dateRange, setDateRange] = useState<DateRange<Dayjs>>([null, null]);
+  const [operatingHistoryData, setOperatingHistoryData] = useState<OperatingHistory[]>();
+  const [analyticsState, analyticsDispatch] = useReducer(anayliticsReducer, {value: null});
 
   const OperatingHistoryQuery = OperatingHistoryList(dateRange);
-
-  const [data, setData] = useState<OperatingHistory[]>();
-
-  const [analytics, setAnalytics] = useState<{
-    numberOfDaysAnalyzed: number,
-    daysAnalyzed: number[],
-    hoursOn: number,
-    spendMoney: number
-    costAllTimeOn: number
-    savedMoney: number
-  } | null>(null);
 
   useEffect(()=>{
     OperatingHistoryQuery.refetch();
@@ -33,41 +24,12 @@ export default function AnalyticsPage(): JSX.Element {
   }, [dateRange]);
   
  useEffect(()=>{
-  if(OperatingHistoryQuery.data) setData(OperatingHistoryQuery.data.operatingHistory);
+  if(OperatingHistoryQuery.data) setOperatingHistoryData(OperatingHistoryQuery.data.operatingHistory);
  }, [OperatingHistoryQuery.data]);
 
   useEffect(()=>{
-
-    if(data && data.length>0){
-
-      let NumberOfDaysToBeAnalyzed = data.length;
-      let DaysToBeAnalyzed = [] as number[];
-      let totalHoursOn = 0;
-      
-      data.forEach(dailyHistory=>{
-        const hoursOn = dailyHistory.history.filter(isOn=>isOn===true).length;
-        totalHoursOn += hoursOn;
-        DaysToBeAnalyzed.push(dailyHistory.day);
-      });
-
-      const kWh = 0.76;
-      const energyTax = 0.6;
-      const spendMoney = totalHoursOn * kWh * energyTax;
-      const costAllTimeOn = NumberOfDaysToBeAnalyzed * 24 * kWh * energyTax;
-      const savedMoney = costAllTimeOn - spendMoney;
-
-      setAnalytics({
-        numberOfDaysAnalyzed: NumberOfDaysToBeAnalyzed,
-        daysAnalyzed: DaysToBeAnalyzed,
-        hoursOn: totalHoursOn,
-        spendMoney: spendMoney,
-        costAllTimeOn: costAllTimeOn,
-        savedMoney: savedMoney
-      });
-
-    }
-
-  }, [data]);
+    analyticsDispatch({type: "setState", payload: operatingHistoryData});
+  }, [operatingHistoryData]);
 
   return (
     <div className="App">
@@ -98,7 +60,7 @@ export default function AnalyticsPage(): JSX.Element {
             :
             OperatingHistoryQuery.isError && <p>{OperatingHistoryQuery.error?.message}</p>
           }
-          {analytics?
+          {analyticsState.value &&
             <table className='Analytics-table'>
               <thead className='Table-header'>
                 <tr className='Table-row'>
@@ -110,44 +72,42 @@ export default function AnalyticsPage(): JSX.Element {
               <tbody className='Table-body'>
                 <tr className='Table-row Table-row-link'>
                   <td>Amount of days with operation history in this range</td>
-                  <td>{analytics.numberOfDaysAnalyzed}</td>
+                  <td>{analyticsState.value.numberOfDaysAnalyzed}</td>
                 </tr>
                 <tr className='Table-row Table-row-link'>
                   <td>Days with operation history in this range</td>
-                  <td>{JSON.stringify(analytics.daysAnalyzed)}</td>
+                  <td>{JSON.stringify(analyticsState.value.daysAnalyzed)}</td>
                 </tr>
                 <tr className='Table-row Table-row-link'>
                   <td>Amount of hours turned on</td>
-                  <td>{analytics.hoursOn}</td>
+                  <td>{analyticsState.value.hoursOn}</td>
                 </tr>
                 <tr className='Table-row Table-row-link'>
-                  {(analytics.numberOfDaysAnalyzed>1)? 
+                  {(analyticsState.value.numberOfDaysAnalyzed>1)? 
                     <td>Money spend on these days</td> 
                     : 
                     <td>Money spend on this day</td>
                   }
-                  <td style={{color: "#FF0000"}}>- R${analytics.spendMoney.toFixed(2)}</td>
+                  <td style={{color: "#FF0000"}}>- R${analyticsState.value.spendMoney.toFixed(2)}</td>
                 </tr>
                 <tr className='Table-row Table-row-link'>
-                  {(analytics.numberOfDaysAnalyzed>1)? 
+                  {(analyticsState.value.numberOfDaysAnalyzed>1)? 
                     <td>Money that would be spent on these days</td> 
                     : 
                     <td>Money that would be spent on this day</td>
                   }
-                  <td>R${analytics.costAllTimeOn.toFixed(2)}</td>
+                  <td>R${analyticsState.value.costAllTimeOn.toFixed(2)}</td>
                 </tr>
                 <tr className='Table-row Table-row-link'>
-                  {(analytics.numberOfDaysAnalyzed>1)? 
+                  {(analyticsState.value.numberOfDaysAnalyzed>1)? 
                     <td>Money saved on these days</td>
                     : 
                     <td>Money saved on this day</td>
                   }
-                  <td style={{color: "#00FF00"}}>+ R${analytics.savedMoney.toFixed(2)}</td>
+                  <td style={{color: "#00FF00"}}>+ R${analyticsState.value.savedMoney.toFixed(2)}</td>
                 </tr>
               </tbody>
             </table>
-            :
-            null
           }
         </section>
         
@@ -155,4 +115,52 @@ export default function AnalyticsPage(): JSX.Element {
 
     </div>
   );
+}
+
+interface analyticsState {
+  value: {
+    numberOfDaysAnalyzed: number,
+    daysAnalyzed: number[],
+    hoursOn: number,
+    spendMoney: number,
+    costAllTimeOn: number,
+    savedMoney: number
+  } | null
+}
+
+interface analysticsAction {
+  type: 'setState',
+  payload?: OperatingHistory[]
+}
+
+function anayliticsReducer(state: analyticsState | null, action: analysticsAction){
+  
+  if(action.payload && action.payload.length>0){
+
+    let NumberOfDaysToBeAnalyzed = action.payload.length;
+    let DaysToBeAnalyzed = [] as number[];
+    let totalHoursOn = 0;
+    
+    action.payload.forEach(dailyHistory=>{
+      const hoursOn = dailyHistory.history.filter(isOn=>isOn===true).length;
+      totalHoursOn += hoursOn;
+      DaysToBeAnalyzed.push(dailyHistory.day);
+    });
+
+    const kWh = 0.76;
+    const energyTax = 0.6;
+    const spendMoney = totalHoursOn * kWh * energyTax;
+    const costAllTimeOn = NumberOfDaysToBeAnalyzed * 24 * kWh * energyTax;
+    const savedMoney = costAllTimeOn - spendMoney;
+
+    return {value: {
+      numberOfDaysAnalyzed: NumberOfDaysToBeAnalyzed,
+      daysAnalyzed: DaysToBeAnalyzed,
+      hoursOn: totalHoursOn,
+      spendMoney: spendMoney,
+      costAllTimeOn: costAllTimeOn,
+      savedMoney: savedMoney
+    }};
+
+  } else return {value: null}
 }

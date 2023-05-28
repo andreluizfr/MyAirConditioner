@@ -16,26 +16,26 @@ export default function App(): JSX.Element {
 
   return (
     <React.Suspense fallback={<LoadingPage/>}>
-				<RouterProvider router={
-					createBrowserRouter([
-            			{
-							path: "/",
-							element: <HomePage/>,
-						},
-						{
-							path: "/analytics",
-							element: <AnalyticsPage/>,
-						},
-						{
-							path: "/reports",
-							element: <ReportsPage/>,
-						},
-						{
-							path: "/dashboards",
-							element: <DashboardsPage/>,
-						},
-					])
-				}/> 
-			</React.Suspense>
+		<RouterProvider router={
+			createBrowserRouter([
+				{
+					path: "/",
+					element: <HomePage/>,
+				},
+				{
+					path: "/analytics",
+					element: <AnalyticsPage/>,
+				},
+				{
+					path: "/reports",
+					element: <ReportsPage/>,
+				},
+				{
+					path: "/dashboards",
+					element: <DashboardsPage/>,
+				},
+			])
+		}/> 
+	</React.Suspense>
   );
 }
