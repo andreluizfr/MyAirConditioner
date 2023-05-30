@@ -15,10 +15,10 @@ export default function HomePage ():JSX.Element {
     const CurrentDateTimeQuery = CurrentDateTime();
 
     const TemperatureSensorStatusQuery = TemperatureSensorStatus();
-    const TemperatureQuery = Temperature();
-
     const AirConditionerControllerStatusQuery = AirConditionerControllerStatus();
-    const AirConditionerStatusQuery = AirConditionerStatus();
+
+    const TemperatureQuery = Temperature(TemperatureSensorStatusQuery.data?.temperatureSensorStatus);
+    const AirConditionerStatusQuery = AirConditionerStatus(AirConditionerControllerStatusQuery.data?.airConditionerControllerStatus);
 
     return (
         <div className="App">

@@ -22,7 +22,7 @@ export default function AnalyticsPage(): JSX.Element {
     OperatingHistoryQuery.refetch();
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [dateRange]);
-  
+
  useEffect(()=>{
   if(OperatingHistoryQuery.data) setOperatingHistoryData(OperatingHistoryQuery.data.operatingHistory);
  }, [OperatingHistoryQuery.data]);

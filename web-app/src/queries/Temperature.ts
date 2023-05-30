@@ -1,8 +1,11 @@
 import { useQuery } from "react-query";
+
 import axios from '../libs/axios';
 import { AxiosError, isAxiosError } from "axios";
 
-export default function Temperature() {
+
+export default function Temperature(temperatureSensorStatus: undefined | boolean) {
+
     const TemperatureQuery = useQuery <{temperature: number}, Error> ("Temperature", async () => {
         try {
 
@@ -30,6 +33,7 @@ export default function Temperature() {
 
         }
     }, {
+        enabled: temperatureSensorStatus?true:false,
         retry: false, //dont need it, because it will refetch even if it fails each 0.2s 
         refetchOnWindowFocus: false,
         staleTime: 0, //if its 0 it will always fetch the data again but it continues using cache as fallback while loading the query
